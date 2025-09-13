@@ -4,6 +4,110 @@ format: html
 toc: TRUE
 editor_options: 
   chunk_output_type: inline
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
-Answers go here!
+> 1.  There is an excel version of the white wine data set available at
+>     https://www4.stat.ncsu.edu/\~online/ datasets/white-wine.xlsx.\
+>     • Download this file\
+>     • Place it in a folder you know (such as your working directory
+>     for your project)\
+>     • Import the data from the first sheet using the readxl package\
+>     • Print out the tibble (just call the object name)
+
+```{r Question 1}
+library(tidyverse)
+library(readxl)
+
+ww_data <- read_excel("../white-wine.xlsx")
+ww_data
+```
+
+> 2.  When you print the data set out to the console, you may notice
+>     that some of the variable names are surrounded by backticks. This
+>     is because they are non-standard (they include a space in them).
+>     We can rename them in a number of ways. We’ll do it by reading in
+>     the variable names from the 2nd sheet of the same file.\
+>     • Read in the data from the 2nd sheet. This should return a data
+>     frame with one column containing alternative versions of the
+>     variable names.\
+>     • Grab that column and overwrite the current column names
+>     (colnames()) of your white wine tibble.
+
+```{r Question 2}
+ww_data_sheet_2 <- (read_excel("../white-wine.xlsx", 
+                            sheet = excel_sheets("../white-wine.xlsx")[2],
+                            col_names = TRUE))
+colnames(ww_data) <- ww_data_sheet_2$Variables
+```
+
+> 3.  Lastly, add a column to this data set to indicate the wines are
+>     white. That is, add a column that has values of ‘white’ for every
+>     observation.
+
+```{r Question 3}
+ww_data <- ww_data |> mutate(Wine_Type = 'white')
+
+```
+
+> 4.  There is a semi-colon delimited version of the red wine data set
+>     available at
+>     https://www4.stat.ncsu.edu/\~online/datasets/red-wine.csv.\
+>     • Read this in using the readr package. Be careful that the
+>     columns are read in as the correct type!\
+>     • You should replace the variable names as done above\
+>     • You should append a column denoting the type as “red”
+
+```{r Question 4}
+
+library(readr)
+rw_data <- read_delim("https://www4.stat.ncsu.edu/~online/datasets/red-wine.csv")
+
+colnames(rw_data) <- ww_data_sheet_2$Variables
+
+rw_data <- rw_data |> mutate(Wine_Type = 'red')
+
+
+```
+
+> 5.  Combine these two data sets into one data set. They both have the
+>     exact same columns so this is an easy append task!\
+>     • Use the dplyr::bind_rows() function (see the help) to create one
+>     tibble containing all of the wine data.
+
+```{r Question 5}
+
+wine_data <- bind_rows(ww_data, rw_data)
+```
+
+>6. Start a chain on your new combined data object to filter the data to only look at high-quality wines
+(quality > 6.5) and wines that have a reasonable alcohol value (alcohol < 132).
+
+```{r}
+wine_data |> filter(quality > 6.5 & alcohol < 132)
+```
+
+>7. Continue your chain to now sort the data from highest quality to lowest.
+
+```{r}
+wine_data |> filter(quality > 6.5 & alcohol < 132) |> arrange(desc(quality))
+```
+
+> 8. Continue your chain to select only the variables that contain acid, the alcohol variable, the type
+variable, and the quality variable.
+
+```{r}
+wine_data |> filter(quality > 6.5 & alcohol < 132) |> arrange(desc(quality)) |> select(contains("acid"), "alcohol", "quality", "Wine_Type")   
+```
+
+> 9. Continue your chain to add the mean and standard deviation of the alcohol variable to the data set for each setting of the quality variable.
+
+```{r}
+wine_data |> filter(quality > 6.5 & alcohol < 132) |> arrange(desc(quality)) |> select(contains("acid"), "alcohol", "quality", "Wine_Type") |>
+ group_by(quality) |>
+  mutate(across(alcohol, list(mean = mean, sd = sd),
+ .names = "{.col}_{.fn}"))
+```
+

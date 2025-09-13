@@ -6,5 +6,53 @@ editor_options:
   chunk_output_type: inline
 ---
 
+1.  If your working directory is myfolder/homework/, what relative path would you specify to get the file located at myfolder/MyData.csv?
 
-Answers go here!
+> "../MyData.csv"
+
+2.  What are the major benefits of using R projects?
+
+> 1.  R Projects can interface with GitHub for version control.
+> 2.  R Projects are portable and can be moved around and shared without any concern about file paths.
+> 3.  R Projects provide a way to divide the work into contexts.
+
+3.  What is git and what is github?
+
+> 1.  Git is a version control software.
+> 2.  Github is an online hosting service for Git-based projects.
+
+4.  What are the two main differences between a tibble and a data.frame?
+
+> 1.  Tibbles have a refined print method that shows only the first 10 rows, and all the columns that fit on screen. This makes it much easier to work with large data. In addition to its name, each column reports its type, a nice feature borrowed from str():
+
+> 2.  Tibbles do not coerce down to a vector when you subset to only one column using \[\*\*.
+
+5.  Rewrite the following nested function call using BaseR’s chaining operator:
+
+```{r}
+arrange(filter(select(as_tibble(iris), starts_with("Petal"), Species), Petal.Length < 1.55), Species)
+
+```
+
+> This code block -\
+> - reads in the iris data set as a tibble.\
+> - selects columns starting with "Petal".\
+> - selects the Species column.\
+> - filters rows on Petal.Length \< 1.55.\
+> - sorts the resulting data by Species.
+
+> The equivalent code in Base R is shown below.
+
+```{r}
+library(dplyr)
+
+iris |> #read the pipe as "then"
+  as_tibble() |>
+  select(starts_with("Petal"), Species) |> 
+  filter(Petal.Length < 1.55) |>
+  arrange(Species) 
+  
+```
+
+
+
