@@ -7,3 +7,11 @@ editor_options:
 ---
 
 Norman Allie Homework 4
+
+Hi Ryan,
+
+Please look at the latest deployment.
+
+Thank you,
+
+Norman
