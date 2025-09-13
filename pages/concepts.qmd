@@ -29,10 +29,9 @@ editor_options:
 
 5.  Rewrite the following nested function call using BaseR’s chaining operator:
 
-```{r}
 arrange(filter(select(as_tibble(iris), starts_with("Petal"), Species), Petal.Length < 1.55), Species)
 
-```
+
 
 > This code block -\
 > - reads in the iris data set as a tibble.\
@@ -43,16 +42,13 @@ arrange(filter(select(as_tibble(iris), starts_with("Petal"), Species), Petal.Len
 
 > The equivalent code in Base R is shown below.
 
-```{r}
+
 library(dplyr)
 
-iris |> #read the pipe as "then"
+iris |> 
   as_tibble() |>
   select(starts_with("Petal"), Species) |> 
   filter(Petal.Length < 1.55) |>
   arrange(Species) 
   
-```
-
-
 

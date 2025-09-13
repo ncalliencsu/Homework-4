@@ -59,6 +59,6 @@ yeast_data |> select(-seq_name, -nuc)
 yeast_data |> select(-seq_name, -nuc) |> 
   group_by(class) |>
   mutate(across(where(is.numeric), list(mean = mean, median = median),
- .names = "mean_{.col}_{.fn}"))
+ .names = "{.col}_{.fn}"))
 
 ```
